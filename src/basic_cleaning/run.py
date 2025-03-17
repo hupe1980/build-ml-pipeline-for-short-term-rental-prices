@@ -34,6 +34,10 @@ def go(args):
     logger.info("Convert last_review to datetime")
     df['last_review'] = pd.to_datetime(df['last_review'])
 
+    # Ensure longitude and latitude boundaries for properties in and around NYC
+    idx = df['longitude'].between(-74.25, -73.50) & df['latitude'].between(40.5, 41.2)
+    df = df[idx].copy() 
+
     logger.info("Save file")
     filename = "clean_sample.csv"
     df.to_csv(filename, index=False)
